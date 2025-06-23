@@ -5,8 +5,8 @@ import { UserRole } from "../../types/auth";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  roles?: UserRole[];       // Allowed roles for the route
-  requireAuth?: boolean;    // Defaults to true
+  roles?: UserRole[]; // Allowed roles for the route
+  requireAuth?: boolean; // Defaults to true
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({

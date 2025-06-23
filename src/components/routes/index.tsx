@@ -7,7 +7,7 @@ import Home from "../../pages/Home";
 import About from "../../pages/About";
 import Services from "../../pages/Services";
 import Login from "../../pages/Login";
-import SignupCustomer  from "../../pages/SignupCustomer";
+import SignupCustomer from "../../pages/SignupCustomer";
 import SignupHelper from "../../pages/SignupProvider";
 import SearchResults from "../../pages/SearchResults";
 

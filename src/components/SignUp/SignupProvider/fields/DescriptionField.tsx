@@ -2,6 +2,8 @@ import React from "react";
 import { FileText } from "lucide-react";
 
 interface DescriptionFieldProps {
+    id: string;
+    name: string,
   value: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }

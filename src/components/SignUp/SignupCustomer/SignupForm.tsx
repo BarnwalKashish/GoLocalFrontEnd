@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import axios, { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
-import { User, Phone, MapPin, Briefcase, Mail, Award } from "lucide-react";
+import { User, Phone, MapPin, Mail } from "lucide-react";
 
 import SignupInput from "./fields/SignupInput";
 import PasswordField from "./fields/PasswordField";
-import SelectOccupation from "./fields/SelectOccupation";
 import PhotoUpload from "./fields/PhotoUpload";
-import DescriptionField from "./fields/DescriptionField";
 
 const SignupForm: React.FC = () => {
   const navigate = useNavigate();
@@ -19,21 +17,14 @@ const SignupForm: React.FC = () => {
   const [formData, setFormData] = useState({
     name: "",
     mobile: "",
-    occupation: "",
     location: "",
     username: "",
-    description: "",
     password: "",
     confirmPassword: "",
     email: "",
-    experience: "",
   });
 
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -60,17 +51,14 @@ const SignupForm: React.FC = () => {
     try {
       const form = new FormData();
       form.append("username", formData.username);
-      form.append("providerName", formData.name);
+      form.append("customerName", formData.name);
       form.append("location", formData.location);
       form.append("mobileNumber", formData.mobile);
       form.append("email", formData.email);
-      form.append("service", formData.occupation);
-      form.append("experience", formData.experience);
-      form.append("description", formData.description);
       if (photo) form.append("profilePicture", photo);
       form.append("password", formData.password);
 
-      const res = await axios.post("/api/auth/register-provider", form, {
+      const res = await axios.post("/api/auth/register-customer", form, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -78,7 +66,7 @@ const SignupForm: React.FC = () => {
 
       if (res.status === 200 || res.status === 201) {
         alert("Registration successful! Welcome to Go Local.");
-        navigate("/provider-dashboard");
+        navigate("/customer-dashboard");
       } else {
         alert(`Registration failed: ${res.statusText}`);
       }
@@ -97,57 +85,43 @@ const SignupForm: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <SignupInput
           id="name"
+          label="Full Name"
           name="name"
           value={formData.name}
           onChange={handleChange}
           placeholder="Full Name"
-          icon={User}
+          icon={<User />}
         />
         <SignupInput
           id="mobile"
+          label="Mobile Number"
           name="mobile"
           value={formData.mobile}
           onChange={handleChange}
           placeholder="10-digit mobile number"
-          icon={Phone}
+          icon={<Phone />}
         />
       </div>
 
-      {/* Email & Experience */}
+      {/* Email & Location */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <SignupInput
           id="email"
+          label="Email"
           name="email"
           value={formData.email}
           onChange={handleChange}
           placeholder="Email address"
-          icon={Mail}
+          icon={<Mail />}
         />
-        <SignupInput
-          id="experience"
-          name="experience"
-          value={formData.experience}
-          onChange={handleChange}
-          placeholder="Years of experience"
-          icon={Award}
-        />
-      </div>
-
-      {/* Occupation & Location */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <SelectOccupation
-                  id="occupation"
-                  name="occupation"
-                  value={formData.occupation}
-                  onChange={handleChange}
-                  icon={Briefcase} occupations={[]}        />
         <SignupInput
           id="location"
+          label="Location"
           name="location"
           value={formData.location}
           onChange={handleChange}
           placeholder="City or Area"
-          icon={MapPin}
+          icon={<MapPin />}
         />
       </div>
 
@@ -155,44 +129,34 @@ const SignupForm: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <SignupInput
           id="username"
+          label="Username"
           name="username"
           value={formData.username}
           onChange={handleChange}
           placeholder="Unique Username"
         />
-        <PhotoUpload
-          id="profilePicture"
-          name="profilePicture"
-          onChange={handlePhotoUpload}
-        />
+        <PhotoUpload id="photo" name="photo" onChange={handlePhotoUpload} />
       </div>
-
-      {/* Description */}
-      <DescriptionField
-        id="description"
-        name="description"
-        value={formData.description}
-        onChange={handleChange}
-      />
 
       {/* Password Fields */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <PasswordField
+          id="password"
           label="Password"
           name="password"
           value={formData.password}
           onChange={handleChange}
-          showPassword={showPassword}
-          toggleVisibility={() => setShowPassword((prev) => !prev)}
+          show={showPassword}
+          setShow={setShowPassword}
         />
-
         <PasswordField
+          id="confirmPassword"
           label="Confirm Password"
           name="confirmPassword"
           value={formData.confirmPassword}
           onChange={handleChange}
-          showPassword={showConfirmPassword}
-          toggleVisibility={() => setShowConfirmPassword((prev) => !prev)}
+          show={showConfirmPassword}
+          setShow={setShowConfirmPassword}
         />
       </div>
 
@@ -200,7 +164,7 @@ const SignupForm: React.FC = () => {
         type="submit"
         className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 px-4 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 shadow-lg transition-all"
       >
-        Register as Service Provider
+        Register as Customer
       </button>
     </form>
   );

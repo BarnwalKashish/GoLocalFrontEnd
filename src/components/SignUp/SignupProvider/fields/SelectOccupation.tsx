@@ -1,9 +1,10 @@
 import React from "react";
-import { Briefcase } from "lucide-react";
+import { Briefcase, LucideIcon } from "lucide-react";
 
 interface SelectOccupationProps {
   id: string;
   name: string;
+  icon: LucideIcon;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   occupations: string[];
@@ -15,6 +16,7 @@ const SelectOccupation: React.FC<SelectOccupationProps> = ({
   value,
   onChange,
   occupations,
+  icon: Icon,
 }) => {
   return (
     <div>
@@ -25,6 +27,10 @@ const SelectOccupation: React.FC<SelectOccupationProps> = ({
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
           <Briefcase className="h-5 w-5 text-gray-400" />
         </div>
+                <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <Icon className="w-5 h-5 text-gray-400" />
+        </span>
+
         <select
           id={id}
           name={name}
